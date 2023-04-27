@@ -2,10 +2,10 @@
 '''
 file 100-safe_first_element.py
 '''
-from typing import Sequence, Any, Union
+from typing import Sequence, Any, Union, Optional, List
 
 
-def safe_first_element(lst: Sequence[Any]) -> Union[None, Any]:
+def safe_first_element(lst: Sequence[Any]) -> Optional[Any]:
     '''
     returns values with the appropriate type not known input
     '''
