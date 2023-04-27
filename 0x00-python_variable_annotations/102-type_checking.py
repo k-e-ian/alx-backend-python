@@ -5,7 +5,7 @@ file 102-type_checking.py
 from typing import Tuple, List
 
 
-def zoom_array(lst: Tuple[int], factor: int = 2) -> Tuple[int]:
+def zoom_array(lst: Tuple[int], factor: int = 2) -> List[int]:
     '''
     returns tuple=item for item in range(factor)
     '''
