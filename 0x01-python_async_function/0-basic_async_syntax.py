@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+'''
+File: 0-basic_async_syntax.py
+'''
+import random
+import asyncio
+
+
+async def wait_random(max_delay=10):
+    '''
+    function that waits for a random delay between 0 and max_delay
+    included and float value seconds and eventually returns ot    '''
+    delay = random.uniform(0, max_delay)
+    await asyincio.sleep(delay)
+    return delay
