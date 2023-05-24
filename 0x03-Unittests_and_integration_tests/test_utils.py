@@ -26,3 +26,17 @@ class TestAccessNestedMap(unittest.TestCase):
     ) -> None:
         result = access_nested_map(nested_map, path)
         self.assertEqual(result, expected_result)
+
+    @parameterized.expand([
+        ({}, ("a",), "Key 'a' not found"),
+        ({"a": 1}, ("a", "b"), "Key 'b' not found in 'a'")
+    ])
+    def test_access_nested_map_exception(
+            self,
+            nested_map: Mapping,
+            path: Sequence,
+            expected_exception_message: str
+    ) -> None:
+        with self.assertRaises(KeyError) as context:
+            access_nested_map(nested_map, path)
+        self.assertEqual(str(context.exception), expected_exception_message)
