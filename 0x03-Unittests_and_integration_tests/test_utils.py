@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.8
 '''
 File: test_utils.py
 '''
@@ -40,3 +40,30 @@ class TestAccessNestedMap(unittest.TestCase):
         with self.assertRaises(KeyError) as context:
             access_nested_map(nested_map, path)
         self.assertEqual(str(context.exception), expected_exception_message)
+
+
+class TestGetJson(TestCase):
+    '''
+    Class tests utils.get_json
+    '''
+
+    @parameterized.expand(
+        [
+            ("http://example.com", {"payload": True}),
+            ("http://holberton.io", {"payload": False}),
+        ]
+    )
+    @patch("utils.requests.get")
+    def test_get_json(
+            self,
+            test_url: str,
+            test_payload: Dict,
+            mock_get
+    ) -> None:
+        mock_response = mock_get.return_value
+        mock_response.json.return_value = test_payload
+
+        result = get_json(test_url)
+
+        mock_get.assert_called_once_with(test_url)
+        self.assertEqual(result, test_payload)
