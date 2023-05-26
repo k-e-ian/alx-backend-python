@@ -6,7 +6,7 @@ File: test_utils.py
 import unittest
 from parameterized import parameterized
 from typing import Mapping, Sequence, Any
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 from unittest import mock
 
 
@@ -61,6 +61,38 @@ class TestGetJson(unittest.TestCase):
 
         mock_get.assert_called_once_with(test_url)
         self.assertEqual(result, test_payload)
+
+
+class TestMemoize(unittest.TestCase):
+    def test_memoize(self):
+        '''
+        Test memoization behavior of utils.memoize decorator.
+        '''
+        class TestClass:
+            def a_method(self):
+                '''
+                Example method.
+                '''
+                return 42
+
+            @memoize
+            def a_property(self):
+                '''
+                Example property with memoization.
+                '''
+                return self.a_method()
+
+        with mock.patch('utils.TestClass.a_method') as mock_a_method:
+            mock_a_method.return_value = 42
+
+            test_instance = TestClass()
+
+            result1 = test_instance.a_property
+            result2 = test_instance.a_property
+
+            mock_a_method.assert_called_once()
+            self.assertEqual(result1, 42)
+            self.assertEqual(result2, 42)
 
 
 if __name__ == '__main__':
