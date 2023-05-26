@@ -64,6 +64,9 @@ class TestGetJson(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
+    '''
+    Class implements TestMemoize
+    '''
     def test_memoize(self):
         '''
         Test memoization behavior of utils.memoize decorator.
@@ -82,15 +85,15 @@ class TestMemoize(unittest.TestCase):
                 '''
                 return self.a_method()
 
-        with mock.patch('utils.TestClass.a_method') as mock_a_method:
-            mock_a_method.return_value = 42
+        with mock.patch('utils.memoize') as mock_memoize:
+            mock_memoize.return_value = 42
 
             test_instance = TestClass()
 
             result1 = test_instance.a_property
             result2 = test_instance.a_property
 
-            mock_a_method.assert_called_once()
+            mock_memoize.assert_called_once()
             self.assertEqual(result1, 42)
             self.assertEqual(result2, 42)
 
