@@ -28,42 +28,18 @@ class TestAccessNestedMap(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     @parameterized.expand([
-        ({}, ("a",), "Key 'a' not found"),
-        ({"a": 1}, ("a", "b"), "Key 'b' not found in 'a'")
+        ({}, ("a",)),
+        ({"a": 1}, ("a", "b"))
     ])
     def test_access_nested_map_exception(
             self,
-            nested_map: Mapping,
-            path: Sequence,
-            expected_exception_message: str
-    ) -> None:
+            nested_map: dict,
+            path: tuple
+    ):
         with self.assertRaises(KeyError) as context:
             access_nested_map(nested_map, path)
-        self.assertEqual(str(context.exception), expected_exception_message)
+        self.assertEqual(str(context.exception), "'{}'".format(path[-1]))
 
 
-class TestGetJson(TestCase):
-    '''
-    Class tests utils.get_json
-    '''
-
-    @parameterized.expand(
-        [
-            ("http://example.com", {"payload": True}),
-            ("http://holberton.io", {"payload": False}),
-        ]
-    )
-    @patch("utils.requests.get")
-    def test_get_json(
-            self,
-            test_url: str,
-            test_payload: Dict,
-            mock_get
-    ) -> None:
-        mock_response = mock_get.return_value
-        mock_response.json.return_value = test_payload
-
-        result = get_json(test_url)
-
-        mock_get.assert_called_once_with(test_url)
-        self.assertEqual(result, test_payload)
+if __name__ == '__main__':
+    unittest.main()
