@@ -7,7 +7,8 @@ import unittest
 from parameterized import parameterized
 from typing import Mapping, Sequence, Any
 from utils import access_nested_map, get_json, memoize
-from unittest import mock
+from unittest import mock, TestCase
+from unittest.mock import patch, Mock
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -72,6 +73,9 @@ class TestMemoize(unittest.TestCase):
         Test memoization behavior of utils.memoize decorator.
         '''
         class TestClass:
+            '''
+            Class Testclass
+            '''
             def a_method(self):
                 '''
                 Example method.
@@ -85,17 +89,13 @@ class TestMemoize(unittest.TestCase):
                 '''
                 return self.a_method()
 
-        with mock.patch('utils.memoize') as mock_memoize:
-            mock_memoize.return_value = 42
-
-            test_instance = TestClass()
-
-            result1 = test_instance.a_property
-            result2 = test_instance.a_property
-
-            mock_memoize.assert_called_once()
-            self.assertEqual(result1, 42)
-            self.assertEqual(result2, 42)
+        with patch.object(TestClass, "a_method",
+                          return_value=42) as mock_method:
+            test_class = TestClass()
+            result = test_class.a_property
+            result = test_class.a_property
+            self.assertEqual(result, 42)
+            mock_method.assert_called_once()
 
 
 if __name__ == '__main__':
