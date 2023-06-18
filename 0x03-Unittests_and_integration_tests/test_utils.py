@@ -26,6 +26,7 @@ class TestAccessNestedMap(unittest.TestCase):
             path: Sequence,
             expected_result: Any
     ) -> None:
+        '''test access nested map'''
         result = access_nested_map(nested_map, path)
         self.assertEqual(result, expected_result)
 
@@ -38,6 +39,7 @@ class TestAccessNestedMap(unittest.TestCase):
             nested_map: dict,
             path: tuple
     ):
+        '''test access nested map exception'''
         with self.assertRaises(KeyError) as context:
             access_nested_map(nested_map, path)
         self.assertEqual(str(context.exception), "'{}'".format(path[-1]))
